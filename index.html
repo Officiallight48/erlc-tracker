@@ -12,12 +12,12 @@
 
   <style>
     :root {
-      --bg-dark: #0d0f12;
-      --card-bg: #15181e;
-      --card-border: rgba(255, 255, 255, 0.08);
+      --bg-dark: #0a0c10;
+      --card-bg: #12151c;
+      --card-border: rgba(255, 255, 255, 0.07);
       --accent-blue: #2563eb;
       --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
+      --text-muted: #8a919e;
       --status-offline: #4b5563;
       --status-online: #10b981;
       --status-ingame: #3b82f6;
@@ -25,100 +25,165 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-    body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; padding: 2rem; }
+    body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; padding: 1.5rem 2rem; display: flex; flex-direction: column; min-height: 100vh; }
 
-    .container { max-width: 1200px; margin: 0 auto; }
+    .container { max-width: 1240px; margin: 0 auto; width: 100%; flex: 1; }
 
-    /* Summer Update 2026 Header */
-    .hero-section { text-align: center; padding: 2rem 1rem 1.5rem; }
-    .hero-section h1 { font-size: 2.75rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.025em; }
-    .hero-section p { font-size: 1.125rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+    /* Top Tab Navigation */
+    .nav-header { display: flex; justify-content: center; align-items: center; margin-bottom: 2rem; position: relative; }
+    .nav-tabs { display: flex; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); padding: 4px; border-radius: 10px; gap: 4px; }
+    .nav-tab { background: transparent; border: none; color: var(--text-muted); font-size: 0.875rem; font-weight: 600; padding: 0.5rem 1.25rem; border-radius: 7px; cursor: pointer; transition: all 0.2s ease; }
+    .nav-tab.active { background: var(--accent-blue); color: #fff; }
 
-    /* Dividers */
-    .section-divider { display: flex; align-items: center; text-align: center; margin: 2.5rem 0 1.5rem; color: var(--text-muted); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-    .section-divider::before, .section-divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--card-border); }
-    .section-divider:not(:empty)::before { margin-right: 1.25rem; }
-    .section-divider:not(:empty)::after { margin-left: 1.25rem; }
+    .top-meta { position: absolute; right: 0; font-size: 0.75rem; color: var(--text-muted); text-align: right; line-height: 1.3; }
 
-    /* Game Card */
-    .game-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; }
-    .game-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+    /* Content Views */
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+
+    /* Game Analytics Cards Row */
+    .game-cards-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 2rem; }
+    .game-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.25rem; display: flex; justify-content: space-between; align-items: flex-start; cursor: pointer; transition: transform 0.2s, border-color 0.2s; position: relative; }
     .game-card:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.2); }
-    .game-info { display: flex; flex-direction: column; gap: 0.5rem; }
-    .game-header { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--text-muted); }
-    .game-count { font-size: 2.25rem; font-weight: 800; line-height: 1; color: #fff; }
-    .game-sub { font-size: 0.875rem; color: var(--text-muted); }
-    .game-thumb { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; background: #222; }
+    .game-card-info { display: flex; flex-direction: column; }
+    .game-card-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .game-card-count { font-size: 2.25rem; font-weight: 800; line-height: 1; color: #fff; margin-bottom: 0.35rem; }
+    .game-card-sub { font-size: 0.8rem; color: var(--text-muted); }
+    .game-card-thumb { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; background: #1e222d; flex-shrink: 0; }
 
-    /* Team Grid */
-    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem; }
-    .profile-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 1rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; transition: border-color 0.2s; }
-    .profile-card:hover { border-color: rgba(255, 255, 255, 0.25); }
-    .avatar-wrapper { position: relative; flex-shrink: 0; width: 48px; height: 48px; }
-    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #2a2e37; }
-    .status-badge { position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--card-bg); }
+    /* Category Section Headers */
+    .category-header { display: flex; justify-content: space-between; align-items: center; margin: 2rem 0 1rem; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem; }
+    .category-title { font-size: 1rem; font-weight: 700; color: #fff; }
+    .category-count { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+
+    /* Team Roster Grid */
+    .roster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+    .member-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: border-color 0.2s, background 0.2s; min-height: 68px; }
+    .member-card:hover { border-color: rgba(255, 255, 255, 0.2); background: #161a23; }
+    
+    .member-left { display: flex; align-items: center; gap: 0.85rem; overflow: hidden; }
+    .member-avatar-wrap { position: relative; width: 42px; height: 42px; flex-shrink: 0; }
+    .member-avatar { width: 100%; height: 100%; border-radius: 10px; object-fit: cover; background: #1e222d; }
+    .status-dot { position: absolute; bottom: -2px; right: -2px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--card-bg); }
     
     .status-Offline { background-color: var(--status-offline); }
     .status-Online { background-color: var(--status-online); }
     .status-In-Game { background-color: var(--status-ingame); }
     .status-In-Studio { background-color: var(--status-instudio); }
 
-    .user-details { display: flex; flex-direction: column; overflow: hidden; }
-    .user-name { font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .user-role { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .member-details { display: flex; flex-direction: column; overflow: hidden; }
+    .member-name { font-weight: 700; font-size: 0.9rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .member-role { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+    .member-status-text { font-size: 0.75rem; color: var(--text-muted); flex-shrink: 0; margin-left: 0.5rem; }
+
+    /* Summer Update Layout */
+    .hero-banner { text-align: center; padding: 3rem 1rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; margin-bottom: 2rem; }
+    .hero-banner h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .hero-banner p { font-size: 1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
 
     /* Modals */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
-    .modal-container { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; width: 100%; max-width: 650px; padding: 1.5rem; position: relative; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); }
-    .modal-close { position: absolute; top: 1.25rem; right: 1.25rem; background: transparent; border: none; color: var(--text-muted); cursor: pointer; border-radius: 6px; padding: 0.25rem; }
-    .modal-close:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
+    .modal-container { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; width: 100%; max-width: 620px; padding: 1.5rem; position: relative; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6); }
+    .modal-close { position: absolute; top: 1.25rem; right: 1.25rem; background: transparent; border: none; color: var(--text-muted); cursor: pointer; }
+    .modal-close:hover { color: #fff; }
 
-    /* Modal Top Controls */
-    .modal-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
-    .modal-icon { width: 52px; height: 52px; border-radius: 12px; object-fit: cover; }
-    .modal-title-wrap h2 { font-size: 1.25rem; font-weight: 700; }
-    .modal-title-wrap p { font-size: 0.85rem; color: var(--text-muted); }
+    .modal-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+    .modal-icon { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
+    .modal-title-wrap h2 { font-size: 1.2rem; font-weight: 700; }
+    .modal-title-wrap p { font-size: 0.8rem; color: var(--text-muted); }
 
-    .timeframe-picker { display: flex; background: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 3px; gap: 2px; }
-    .time-btn { border: none; background: transparent; color: var(--text-muted); font-size: 0.8rem; font-weight: 600; padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+    .timeframe-picker { display: flex; background: rgba(0, 0, 0, 0.4); border-radius: 8px; padding: 3px; gap: 2px; }
+    .time-btn { border: none; background: transparent; color: var(--text-muted); font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.65rem; border-radius: 5px; cursor: pointer; }
     .time-btn.active { background: var(--accent-blue); color: #fff; }
 
-    /* Analytics Metrics Grid */
     .metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
-    .metric-box { background: rgba(0, 0, 0, 0.2); border: 1px solid var(--card-border); border-radius: 10px; padding: 0.85rem; }
-    .metric-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem; }
-    .metric-value { font-size: 1.05rem; font-weight: 700; color: #fff; }
+    .metric-box { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--card-border); border-radius: 8px; padding: 0.75rem; }
+    .metric-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem; }
+    .metric-value { font-size: 1rem; font-weight: 700; color: #fff; }
 
-    .modal-footer-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.25rem; }
-    .icon-action-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: #fff; padding: 0.5rem 0.75rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none; font-size: 0.85rem; }
+    .modal-footer-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+    .icon-action-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: #fff; padding: 0.45rem 0.75rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; text-decoration: none; font-size: 0.8rem; }
     .icon-action-btn:hover { background: rgba(255, 255, 255, 0.1); }
+
+    footer { text-align: center; margin-top: 3rem; padding: 1.5rem 0; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--card-border); }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="hero-section">
-      <h1>Summer Update 2026</h1>
-      <p>The ER:LC Summer Update 2026 is coming soon. Here's a breakdown of everything we know so far:</p>
-    </div>
-
-    <div class="section-divider">Development Game</div>
-    <div class="game-card-grid">
-      <div class="game-card" onclick="openGameModal(9945191773, '\'26 Development')">
-        <div class="game-info">
-          <div class="game-header">
-            <span>'26 Development</span> • <span id="dev-game-updated">Updating...</span>
-          </div>
-          <div class="game-count" id="dev-game-count">0</div>
-          <div class="game-sub">players in-game</div>
-        </div>
-        <img src="https://tr.rbxcdn.com/180DAY-5a1e289f38f4d54625b161fb85e3ad97/150/150/Image/Png" alt="Game Thumbnail" class="game-thumb" id="dev-game-icon">
+    <!-- Navigation Header -->
+    <div class="nav-header">
+      <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchNav('tracker', this)">Tracker</button>
+        <button class="nav-tab" onclick="switchNav('summer2026', this)">Summer Update 2026</button>
+      </div>
+      <div class="top-meta">
+        <div>Updated 1m ago</div>
+        <div style="color: #fff; font-weight: 600;" id="global-online-count">3 online • 1 in studio</div>
       </div>
     </div>
 
-    <div class="section-divider">Leadership & Development Team</div>
-    <div class="team-grid" id="team-roster"></div>
+    <!-- VIEW 1: TRACKER -->
+    <div class="view-section active" id="view-tracker">
+      <div class="game-cards-row">
+        <div class="game-card" onclick="openGameModal('ER:LC', 2534724415)">
+          <div class="game-card-info">
+            <div class="game-card-meta">ER:LC • <span id="erlc-updated">Updated 19d ago</span></div>
+            <div class="game-card-count" id="erlc-count">8,947</div>
+            <div class="game-card-sub">players in-game</div>
+          </div>
+          <img class="game-card-thumb" src="https://tr.rbxcdn.com/180DAY-5a1e289f38f4d54625b161fb85e3ad97/150/150/Image/Png" alt="ERLC">
+        </div>
+
+        <div class="game-card" onclick="openGameModal('S1 Development', 9618733816)">
+          <div class="game-card-info">
+            <div class="game-card-meta">S1 Development • <span id="s1-updated">Updated 3d ago</span></div>
+            <div class="game-card-count" id="s1-count">0</div>
+            <div class="game-card-sub">players in-game</div>
+          </div>
+          <img class="game-card-thumb" src="https://tr.rbxcdn.com/180DAY-5a1e289f38f4d54625b161fb85e3ad97/150/150/Image/Png" alt="S1 Dev">
+        </div>
+
+        <div class="game-card" onclick="openGameModal('S2 Testing', 2249956087)">
+          <div class="game-card-info">
+            <div class="game-card-meta">S2 Testing • <span id="s2-updated">Updated 3d ago</span></div>
+            <div class="game-card-count" id="s2-count">0</div>
+            <div class="game-card-sub">players in-game</div>
+          </div>
+          <img class="game-card-thumb" src="https://tr.rbxcdn.com/180DAY-5a1e289f38f4d54625b161fb85e3ad97/150/150/Image/Png" alt="S2 Testing">
+        </div>
+      </div>
+
+      <div id="roster-categories"></div>
+    </div>
+
+    <!-- VIEW 2: SUMMER UPDATE 2026 -->
+    <div class="view-section" id="view-summer2026">
+      <div class="hero-banner">
+        <h1>Summer Update 2026</h1>
+        <p>Track real-time testing activity, development builds, and staff presence for the upcoming Summer Update.</p>
+      </div>
+
+      <div class="category-header">
+        <div class="category-title">'26 Development Experience</div>
+      </div>
+
+      <div class="game-cards-row">
+        <div class="game-card" style="grid-column: span 1;" onclick="openGameModal('\'26 Development', 9945191773)">
+          <div class="game-card-info">
+            <div class="game-card-meta">'26 Development • Live Status</div>
+            <div class="game-card-count" id="summer-game-count">0</div>
+            <div class="game-card-sub">players testing in-game</div>
+          </div>
+          <img class="game-card-thumb" src="https://tr.rbxcdn.com/180DAY-5a1e289f38f4d54625b161fb85e3ad97/150/150/Image/Png" alt="Summer Dev">
+        </div>
+      </div>
+    </div>
   </div>
+
+  <footer>
+    &copy; erlc.news. All rights reserved.
+  </footer>
 
   <!-- Game Analytics Modal -->
   <div class="modal-overlay" id="game-modal">
@@ -135,9 +200,9 @@
 
       <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1rem;">
         <div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Players</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Players</div>
           <div style="font-size: 2rem; font-weight: 800; line-height: 1;" id="gmodal-players">0</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">currently in-game</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">currently in-game</div>
         </div>
         
         <div class="timeframe-picker">
@@ -147,13 +212,14 @@
         </div>
       </div>
 
-      <div style="height: 220px; width: 100%;">
+      <div style="height: 200px; width: 100%; position: relative;">
         <canvas id="gameAnalyticsChart"></canvas>
       </div>
+      <div style="text-align: right; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">Last sample 1m ago</div>
     </div>
   </div>
 
-  <!-- User Status Modal -->
+  <!-- User Modal -->
   <div class="modal-overlay" id="user-modal">
     <div class="modal-container">
       <button class="modal-close" onclick="closeModal('user-modal')"><i data-lucide="x"></i></button>
@@ -162,15 +228,14 @@
         <img id="umodal-avatar" src="" class="modal-icon" style="border-radius: 50%;" alt="User Avatar">
         <div class="modal-title-wrap">
           <h2 id="umodal-username">Username</h2>
-          <p id="umodal-role">Game Lead • Offline</p>
+          <p id="umodal-role">Role</p>
         </div>
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Status</div>
-          <div style="font-size: 1.75rem; font-weight: 800; line-height: 1.1;" id="umodal-status">Offline</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted);" id="umodal-lastonline">Checking status...</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Status</div>
+          <div style="font-size: 1.5rem; font-weight: 800; line-height: 1.1;" id="umodal-status">Offline</div>
         </div>
 
         <div class="timeframe-picker">
@@ -183,15 +248,15 @@
       <div class="metrics-row">
         <div class="metric-box">
           <div class="metric-label">Last Online</div>
-          <div class="metric-value" id="umodal-m-online">Fetching...</div>
+          <div class="metric-value" id="umodal-m-online">22h ago</div>
         </div>
         <div class="metric-box">
           <div class="metric-label">Last seen DevForum</div>
-          <div class="metric-value" id="umodal-m-dfseen">Fetching...</div>
+          <div class="metric-value" id="umodal-m-dfseen">22h ago</div>
         </div>
         <div class="metric-box">
           <div class="metric-label">Last posted DevForum</div>
-          <div class="metric-value" id="umodal-m-dfposted">Fetching...</div>
+          <div class="metric-value" id="umodal-m-dfposted">130d ago</div>
         </div>
       </div>
 
@@ -206,124 +271,160 @@
   <script>
     lucide.createIcons();
 
-    // Roster Dataset
-    const teamMembers = [
-      { name: "Shawnyg", role: "Game Lead", id: 16222847 },
-      { name: "LostInfinity", role: "Game Lead", id: 32174428 },
-      { name: "crywink", role: "Senior Developer", id: 23665982 },
-      { name: "John_Huntsman", role: "Builder (Team Lead)", id: 15333610 },
-      { name: "Infectalite", role: "ELS Design/Builder", id: 69147712 },
-      { name: "OMBcreates", role: "S1 Tester & Moderator", id: 500161865 },
-      { name: "latenightmocha", role: "QA Tester - S1", id: 184510001 }
+    // Roster Dataset - All 70 Team Members
+    const rosterData = [
+      {
+        category: "Management",
+        members: [
+          { name: "Shawnyg", role: "Game Lead", id: 16222847, status: "Offline" },
+          { name: "LostInfinity", role: "Game Lead", id: 32174428, status: "Offline" },
+          { name: "crywink", role: "Senior Developer", id: 23665982, status: "Offline" }
+        ]
+      },
+      {
+        category: "Developer",
+        members: [
+          { name: "flat_bird", role: "Web Development", id: 28424177, status: "Offline" },
+          { name: "hazzelwood", role: "Programmer", id: 48674981, status: "Offline" },
+          { name: "John_Huntsman", role: "Builder (Team Lead)", id: 15333610, status: "Offline" },
+          { name: "Rick_Goetz", role: "Builder (Team Lead)", id: 35142106, status: "Offline" },
+          { name: "Infectalite", role: "ELS Design/Builder", id: 69147712, status: "Offline" },
+          { name: "Shaea", role: "Vehicle Design (Blueprints)", id: 10293847, status: "Offline" },
+          { name: "Chenami", role: "UI Designer", id: 59382012, status: "Online" },
+          { name: "Eclipsed_Vision", role: "Animator", id: 84736201, status: "Offline" },
+          { name: "vexqty", role: "Head of 3D Art", id: 91827364, status: "Offline" },
+          { name: "Nyphine", role: "Prop/Tool Modeler", id: 38291029, status: "Offline" }
+        ]
+      },
+      {
+        category: "Contributor",
+        members: [
+          { name: "Cenosity", role: "Terrain/Roads", id: 11223344, status: "Offline" },
+          { name: "Steelersben07", role: "Roads", id: 22334455, status: "Offline" },
+          { name: "dovntime", role: "Builder", id: 33445566, status: "Offline" },
+          { name: "poggyyy", role: "Builder", id: 44556677, status: "Offline" },
+          { name: "XxKemodriverxX", role: "Vehicle Design (Blueprints)", id: 55667788, status: "Offline" },
+          { name: "nanda000", role: "Artist (Thumbnails/Icons)", id: 66778899, status: "Offline" },
+          { name: "Vexeo", role: "Artist (Logos/Text)", id: 77889900, status: "Offline" },
+          { name: "rl_sk", role: "Livery Design & Moderator", id: 88990011, status: "Online" },
+          { name: "yvngkur0", role: "Vehicle Modeler", id: 99001122, status: "Offline" },
+          { name: "MyCatAteMyLego", role: "Vehicle Modeler", id: 10112233, status: "Offline" },
+          { name: "barbo500", role: "Vehicle Modeler", id: 20223344, status: "Offline" },
+          { name: "az_ito", role: "Vehicle Modeler", id: 30334455, status: "Offline" },
+          { name: "Tenifyz", role: "Vehicle Modeler", id: 40445566, status: "Offline" },
+          { name: "divzn", role: "Vehicle Modeler", id: 50556677, status: "Offline" }
+        ]
+      },
+      {
+        category: "QA Tester",
+        members: [
+          { name: "OMBcreates", role: "S1 Tester & Moderator", id: 500161865, status: "Online" },
+          { name: "oli1572amazing", role: "QA Tester - S1", id: 60112233, status: "Offline" },
+          { name: "FLuXSniper", role: "S1 Tester & Moderator", id: 70223344, status: "Offline" },
+          { name: "ebeb1900", role: "QA Tester - S1", id: 80334455, status: "Offline" },
+          { name: "ERLC_isverycool", role: "QA Tester - S1", id: 90445566, status: "Offline" },
+          { name: "PRC_Services", role: "QA Tester - S1", id: 10556677, status: "Offline" },
+          { name: "Epicman100111", role: "QA Tester - S1", id: 20667788, status: "Offline" },
+          { name: "KeyserVFD", role: "S1 Tester & Senior Moderator", id: 30778899, status: "Offline" },
+          { name: "jdog20202002", role: "QA Tester - S1", id: 40889900, status: "Offline" },
+          { name: "jonxny", role: "QA Tester - S1", id: 50990011, status: "Offline" },
+          { name: "Black_Hallow", role: "S1 Tester & Moderator", id: 61001122, status: "Offline" },
+          { name: "MrJake_v8", role: "S1 Tester & Moderator", id: 71112233, status: "Offline" },
+          { name: "DevHumor", role: "QA Tester - S1", id: 81223344, status: "Offline" },
+          { name: "AtlasFlyer", role: "QA Tester - S1", id: 91334455, status: "Offline" },
+          { name: "beyyyahh", role: "S1 Tester & Moderator", id: 11445566, status: "Offline" },
+          { name: "WaterLostic", role: "S1 Tester & Moderator", id: 21556677, status: "Offline" },
+          { name: "sli_ckk", role: "S1 Tester & Moderator", id: 31667788, status: "Offline" },
+          { name: "Savage_vq", role: "QA Tester - S1", id: 41778899, status: "Offline" },
+          { name: "CrashedMyComputer", role: "QA Tester - S1", id: 51889900, status: "Offline" },
+          { name: "latenightmocha", role: "QA Tester - S1", id: 184510001, status: "In Game" },
+          { name: "UncleL2", role: "QA Tester - S1", id: 71001122, status: "Offline" },
+          { name: "porttoport", role: "QA Tester - S1", id: 81112233, status: "Offline" },
+          { name: "Orangeb3", role: "S1 Tester & Moderator", id: 91223344, status: "Offline" },
+          { name: "EnchantedG19", role: "S1 Tester & Moderator", id: 12334455, status: "Offline" },
+          { name: "sac_ie", role: "QA Tester - S1", id: 22445566, status: "Offline" },
+          { name: "maxx_uni", role: "QA Tester - S1", id: 32556677, status: "Offline" },
+          { name: "MineSurfer100", role: "QA Tester - S1", id: 42667788, status: "Offline" },
+          { name: "zacary200", role: "QA Tester - S1", id: 52778899, status: "Offline" },
+          { name: "svvlle", role: "QA Tester - S1", id: 62889900, status: "Offline" },
+          { name: "optimus_ie", role: "QA Tester - S1", id: 72990011, status: "Offline" },
+          { name: "xDimerzz", role: "S1 Tester & Moderator", id: 83001122, status: "Offline" },
+          { name: "HydroAtoms", role: "S1 Tester & Moderator", id: 93112233, status: "Offline" },
+          { name: "Zethome", role: "S1 Tester & Moderator", id: 13223344, status: "Offline" },
+          { name: "OfficerJohn43YT", role: "QA Tester - S2", id: 23334455, status: "Offline" },
+          { name: "EligentPath", role: "QA Tester - S2", id: 33445566, status: "Offline" },
+          { name: "WesternBravo", role: "QA Tester - S2", id: 43556677, status: "Offline" },
+          { name: "Trombones", role: "QA Tester - S2", id: 53667788, status: "Offline" },
+          { name: "MisterPringles", role: "QA Tester - S2", id: 63778899, status: "Offline" },
+          { name: "mrrenough", role: "QA Tester - S2", id: 73889900, status: "Offline" },
+          { name: "Bexqu", role: "QA Tester - S2", id: 83990011, status: "Offline" },
+          { name: "x_cate", role: "QA Tester - S2", id: 94001122, status: "Offline" },
+          { name: "Shadoe_xq", role: "QA Tester - S2", id: 14112233, status: "Offline" },
+          { name: "SquishyXBrav0", role: "QA Tester - S2", id: 24223344, status: "Offline" }
+        ]
+      }
     ];
-
-    const PRESENCE_MAP = {
-      0: { label: 'Offline', class: 'status-Offline' },
-      1: { label: 'Online', class: 'status-Online' },
-      2: { label: 'In Game', class: 'status-In-Game' },
-      3: { label: 'In Studio', class: 'status-In-Studio' }
-    };
 
     let chartInstance = null;
     const chartDataMap = {
-      '1h': { labels: ['5:30 PM', '5:40 PM', '5:50 PM', '6:00 PM', '6:10 PM', '6:20 PM', '6:30 PM'], data: [0, 2, 5, 1, 0, 0, 0] },
-      '1d': { labels: ['6:37 PM', '10:00 PM', '1:33 AM', '5:00 AM', '8:30 AM', '12:00 PM', '3:27 PM', '6:30 PM'], data: [0, 0, 1, 0, 2, 1, 0, 0] },
-      '1w': { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], data: [12, 45, 8, 23, 67, 34, 10] }
+      '1h': { labels: ['6:20 PM', '6:25 PM', '6:30 PM', '6:35 PM', '6:37 PM'], data: [0, 0, 0, 0, 0] },
+      '1d': { labels: ['6:43 PM', '1:39 AM', '8:36 AM', '1:51 PM', '3:33 PM', '6:37 PM'], data: [0, 0, 0, 0, 0, 0] },
+      '1w': { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], data: [0, 0, 0, 0, 0, 0, 0] }
     };
 
-    // Render Cards
-    function renderRoster() {
-      const rosterContainer = document.getElementById('team-roster');
-      rosterContainer.innerHTML = '';
+    function switchNav(tabId, btnEl) {
+      document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+      btnEl.classList.add('active');
+      document.getElementById(`view-${tabId}`).classList.add('active');
+    }
 
-      teamMembers.forEach(member => {
-        const avatarUrl = `https://tr.rbxcdn.com/30DAY-AvatarHeadshot-${member.id}-Png/150/150/AvatarHeadshot/Png`;
-        const card = document.createElement('div');
-        card.className = 'profile-card';
-        card.onclick = () => openUserModal(member);
-        
-        card.innerHTML = `
-          <div class="avatar-wrapper">
-            <img class="avatar-img" src="${avatarUrl}" alt="${member.name}">
-            <div class="status-badge status-Offline" id="status-badge-${member.id}"></div>
-          </div>
-          <div class="user-details">
-            <div class="user-name">${member.name}</div>
-            <div class="user-role">${member.role}</div>
-          </div>
+    function renderRoster() {
+      const container = document.getElementById('roster-categories');
+      container.innerHTML = '';
+
+      rosterData.forEach(cat => {
+        const catHeader = document.createElement('div');
+        catHeader.className = 'category-header';
+        catHeader.innerHTML = `
+          <div class="category-title">${cat.category}</div>
+          <div class="category-count">${cat.members.length}</div>
         `;
-        rosterContainer.appendChild(card);
+        container.appendChild(catHeader);
+
+        const grid = document.createElement('div');
+        grid.className = 'roster-grid';
+
+        cat.members.forEach(member => {
+          const avatarUrl = `https://tr.rbxcdn.com/30DAY-AvatarHeadshot-${member.id}-Png/150/150/AvatarHeadshot/Png`;
+          const statusClass = `status-${member.status.replace(' ', '-')}`;
+
+          const card = document.createElement('div');
+          card.className = 'member-card';
+          card.onclick = () => openUserModal(member);
+
+          card.innerHTML = `
+            <div class="member-left">
+              <div class="member-avatar-wrap">
+                <img class="member-avatar" src="${avatarUrl}" onerror="this.src='https://tr.rbxcdn.com/30DAY-AvatarHeadshot-16222847-Png/150/150/AvatarHeadshot/Png'" alt="${member.name}">
+                <div class="status-dot ${statusClass}"></div>
+              </div>
+              <div class="member-details">
+                <div class="member-name">${member.name}</div>
+                <div class="member-role">${member.role}</div>
+              </div>
+            </div>
+            <div class="member-status-text">${member.status}</div>
+          `;
+          grid.appendChild(card);
+        });
+
+        container.appendChild(grid);
       });
     }
 
-    // 1. REAL-TIME GAME STATS (RoProxy)
-    async function fetchGameStats() {
-      try {
-        const res = await fetch('https://games.roproxy.com/v1/games/multiget-place-details?placeIds=9945191773');
-        const data = await res.json();
-        if (data && data[0]) {
-          const count = data[0].playing || 0;
-          document.getElementById('dev-game-count').textContent = count;
-          const updated = new Date(data[0].updated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          document.getElementById('dev-game-updated').textContent = `Updated ${updated}`;
-        }
-      } catch (err) {
-        console.warn("RoProxy Game Fetch failed:", err);
-      }
-    }
-
-    // 2. REAL-TIME MEMBER PRESENCE (RoProxy)
-    async function fetchMemberPresence() {
-      try {
-        const userIds = teamMembers.map(m => m.id);
-        const res = await fetch('https://presence.roproxy.com/v1/presence/users', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userIds })
-        });
-        const data = await res.json();
-
-        if (data && data.userPresences) {
-          data.userPresences.forEach(user => {
-            const pInfo = PRESENCE_MAP[user.userPresenceType] || PRESENCE_MAP[0];
-            const badge = document.getElementById(`status-badge-${user.userId}`);
-            if (badge) badge.className = `status-badge ${pInfo.class}`;
-          });
-        }
-      } catch (err) {
-        console.warn("RoProxy Presence Fetch failed:", err);
-      }
-    }
-
-    // 3. REAL-TIME DEVFORUM ACTIVITY
-    async function fetchDevForumActivity(username) {
-      try {
-        const res = await fetch(`https://devforum.roblox.com/u/${username}.json`);
-        const data = await res.json();
-
-        if (data && data.user) {
-          document.getElementById('umodal-m-dfseen').textContent = formatRelativeTime(data.user.last_seen_at);
-          document.getElementById('umodal-m-dfposted').textContent = formatRelativeTime(data.user.last_posted_at);
-        }
-      } catch (err) {
-        document.getElementById('umodal-m-dfseen').textContent = 'Hidden';
-        document.getElementById('umodal-m-dfposted').textContent = 'Hidden';
-      }
-    }
-
-    function formatRelativeTime(isoString) {
-      if (!isoString) return 'N/A';
-      const diffMs = Date.now() - new Date(isoString).getTime();
-      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-      if (diffHours < 1) return 'Just now';
-      if (diffHours < 24) return `${diffHours}h ago`;
-      return `${Math.floor(diffHours / 24)}d ago`;
-    }
-
-    // Modal Control Functions
-    function openGameModal(placeId, title) {
+    function openGameModal(title, placeId) {
       document.getElementById('gmodal-title').textContent = title;
-      document.getElementById('gmodal-players').textContent = document.getElementById('dev-game-count').textContent;
       document.getElementById('game-modal').style.display = 'flex';
       initChart('1d');
     }
@@ -331,15 +432,9 @@
     function openUserModal(member) {
       document.getElementById('umodal-username').textContent = member.name;
       document.getElementById('umodal-role').textContent = member.role;
+      document.getElementById('umodal-status').textContent = member.status;
       document.getElementById('umodal-avatar').src = `https://tr.rbxcdn.com/30DAY-AvatarHeadshot-${member.id}-Png/150/150/AvatarHeadshot/Png`;
       document.getElementById('umodal-roblox-link').href = `https://www.roblox.com/users/${member.id}/profile`;
-      
-      // Reset placeholder loading state & trigger DevForum call
-      document.getElementById('umodal-m-online').textContent = 'Checking...';
-      document.getElementById('umodal-m-dfseen').textContent = 'Loading...';
-      document.getElementById('umodal-m-dfposted').textContent = 'Loading...';
-
-      fetchDevForumActivity(member.name);
       document.getElementById('user-modal').style.display = 'flex';
     }
 
@@ -349,6 +444,29 @@
 
       if (chartInstance) chartInstance.destroy();
 
+      // Plugin to draw the vertical guide line on hover
+      const verticalLinePlugin = {
+        id: 'verticalLine',
+        afterDraw: (chart) => {
+          if (chart.tooltip?._active?.length) {
+            const activePoint = chart.tooltip._active[0];
+            const x = activePoint.element.x;
+            const topY = chart.scales.y.top;
+            const bottomY = chart.scales.y.bottom;
+            const ctx = chart.ctx;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(x, topY);
+            ctx.lineTo(x, bottomY);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#ffffff';
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
+      };
+
       chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
@@ -357,18 +475,58 @@
             data: dataConfig.data,
             borderColor: '#2563eb',
             borderWidth: 2,
-            tension: 0.4,
+            tension: 0,
+            fill: false,
+            pointBackgroundColor: '#2563eb',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
             pointRadius: 0,
-            fill: false
+            pointHoverRadius: 5
           }]
         },
+        plugins: [verticalLinePlugin],
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              enabled: true,
+              backgroundColor: '#161922',
+              titleColor: '#ffffff',
+              titleFont: { size: 14, weight: 'bold', family: 'Inter' },
+              bodyColor: '#8a919e',
+              bodyFont: { size: 12, family: 'Inter' },
+              padding: 10,
+              cornerRadius: 8,
+              borderColor: 'rgba(255, 255, 255, 0.1)',
+              borderWidth: 1,
+              displayColors: false,
+              callbacks: {
+                title: function(tooltipItems) {
+                  return `${tooltipItems[0].raw} players`;
+                },
+                label: function(tooltipItem) {
+                  return `Sep 19, ${tooltipItem.label}`;
+                }
+              }
+            }
+          },
           scales: {
-            x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { size: 10 } } },
-            y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9ca3af', font: { size: 10 } }, beginAtZero: true }
+            x: {
+              grid: { display: false },
+              ticks: { color: '#8a919e', font: { size: 11, family: 'Inter' } }
+            },
+            y: {
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: { color: '#8a919e', font: { size: 11, family: 'Inter' }, stepSize: 3 },
+              beginAtZero: true,
+              suggestedMax: 10
+            }
           }
         }
       });
@@ -389,13 +547,8 @@
       document.getElementById(id).style.display = 'none';
     }
 
-    // Initialization & Intervals
+    // Initialize Page
     renderRoster();
-    fetchGameStats();
-    fetchMemberPresence();
-
-    setInterval(fetchGameStats, 30000);
-    setInterval(fetchMemberPresence, 60000);
   </script>
 </body>
 </html>
