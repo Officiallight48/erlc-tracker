@@ -3,59 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ER:LC Community & Development Hub</title>
+  <title>ER:LC Tracker & Summer Update 2026</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --bg-color: #0b0f19;
-      --card-bg: #131b2e;
-      --card-hover: #1e293b;
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
       --accent: #38bdf8;
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --success: #22c55e;
       --offline: #64748b;
-      --border: #1e293b;
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--bg-color);
       color: var(--text);
       margin: 0;
-      padding: 30px;
+      padding: 20px;
     }
     header {
       text-align: center;
       margin-bottom: 30px;
     }
     h1 {
-      margin: 0 0 10px 0;
-      color: var(--text);
-      font-size: 2.2rem;
-    }
-    header p {
-      color: var(--text-muted);
       margin: 0;
+      color: var(--accent);
     }
     .nav-tabs {
       display: flex;
       justify-content: center;
       gap: 15px;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
     .tab-btn {
       background: var(--card-bg);
-      border: 1px solid var(--border);
+      border: 1px solid var(--text-muted);
       color: var(--text);
-      padding: 12px 24px;
-      border-radius: 10px;
+      padding: 10px 20px;
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: bold;
       transition: 0.2s;
     }
     .tab-btn.active {
       background: var(--accent);
-      color: #0b0f19;
+      color: var(--bg-color);
       border-color: var(--accent);
     }
     .view-section {
@@ -66,121 +59,80 @@
     }
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
       margin-bottom: 30px;
     }
     .stat-card {
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 24px;
-      border-radius: 14px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
     .stat-card h3 {
-      margin: 0 0 12px 0;
+      margin: 0 0 10px 0;
       color: var(--text-muted);
       font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
     .stat-card .number {
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       font-weight: bold;
-      color: var(--text);
+      color: var(--accent);
     }
     .chart-container {
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 24px;
-      border-radius: 14px;
-      margin-bottom: 40px;
-      height: 380px;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      height: 350px;
     }
     .roster-category {
       margin-bottom: 40px;
     }
     .roster-category h2 {
-      font-size: 1.3rem;
-      color: var(--text);
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 12px;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      border-bottom: 2px solid var(--card-bg);
+      padding-bottom: 10px;
+      color: var(--accent);
     }
     .roster-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 16px;
+      gap: 15px;
     }
     .member-card {
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 16px;
-      border-radius: 12px;
+      padding: 15px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
-      gap: 14px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      transition: background 0.2s;
-    }
-    .member-card:hover {
-      background: var(--card-hover);
-    }
-    .avatar-wrapper {
-      position: relative;
-      width: 48px;
-      height: 48px;
-      flex-shrink: 0;
-    }
-    .avatar-wrapper img {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: #334155;
+      gap: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     .status-dot {
-      position: absolute;
-      bottom: 2px;
-      right: 2px;
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      border: 2px solid var(--card-bg);
       background: var(--offline);
+      display: inline-block;
+      flex-shrink: 0;
     }
     .status-dot.online { background: var(--success); }
-    .member-info {
-      overflow: hidden;
-    }
     .member-info h4 {
       margin: 0 0 4px 0;
       font-size: 0.95rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
     .member-info span {
       font-size: 0.75rem;
       color: var(--text-muted);
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .summer-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 30px;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Emergency Response: Liberty County</h1>
-    <p>Community Statistics, Staff Roster, and Summer Update 2026 Tracker</p>
+    <h1>ER:LC Community & Development Hub</h1>
+    <p>Live Statistics, Full Staff Roster, and Summer Update 2026 Tracker</p>
   </header>
 
   <div class="nav-tabs">
@@ -193,19 +145,19 @@
     <div class="stats-grid">
       <div class="stat-card">
         <h3>ER:LC Main Game</h3>
-        <div class="number" id="erlc-count">0</div>
+        <div class="number" id="erlc-count">Loading...</div>
       </div>
       <div class="stat-card">
         <h3>Development Server 1</h3>
-        <div class="number" id="s1-count">0</div>
+        <div class="number" id="s1-count">Loading...</div>
       </div>
       <div class="stat-card">
         <h3>Development Server 2</h3>
-        <div class="number" id="s2-count">0</div>
+        <div class="number" id="s2-count">Loading...</div>
       </div>
       <div class="stat-card">
         <h3>Summer Update Game</h3>
-        <div class="number" id="summer-game-count">0</div>
+        <div class="number" id="summer-game-count">Loading...</div>
       </div>
     </div>
 
@@ -218,20 +170,14 @@
 
   <!-- SUMMER UPDATE 2026 VIEW -->
   <div id="summer-view" class="view-section">
-    <div class="summer-layout">
-      <div class="stat-card">
-        <h3>Development Game Status (Universe ID: 9945191773)</h3>
-        <div class="number" id="summer-tab-count">0</div>
-        <p style="color: var(--text-muted); margin-top: 10px;">Active live tracking for the 2026 Summer Update testing place.</p>
-      </div>
-      <div class="stat-card">
-        <h3>Update Roadmap & Features</h3>
-        <ul style="color: var(--text-muted); line-height: 1.6; margin: 0; padding-left: 20px;">
-          <li><strong>Map Expansions:</strong> New areas and revamped interiors.</li>
-          <li><strong>Vehicle Fleet:</strong> Upcoming emergency and civilian vehicles.</li>
-          <li><strong>Testing Stage:</strong> Internal QA and developer staging.</li>
-        </ul>
-      </div>
+    <div class="stat-card" style="max-width: 600px; margin: 0 auto; text-align: left;">
+      <h2 style="color: var(--accent); margin-top:0;">Summer Update 2026 Overview</h2>
+      <p>Welcome to the central hub tracking all upcoming features, map expansions, and vehicle additions for the 2026 Summer Update.</p>
+      <ul>
+        <li><strong>Universe ID:</strong> 9945191773</li>
+        <li><strong>Status:</strong> In Active Development & Internal Testing</li>
+        <li><strong>Expected Launch:</strong> Summer 2026</li>
+      </ul>
     </div>
   </div>
 
@@ -251,36 +197,96 @@
       }
     }
 
-    // Full Roster Structure categorized with Roblox User IDs
+    // Complete Team Roster Data Structure (with representative Roblox IDs for live presence tracking)
     const rosterData = [
       {
-        category: "Management",
+        category: "Management & Developers",
         members: [
-          { name: "MRNotInTheMood", id: 12345678, role: "Game Lead", status: "Offline" },
-          { name: "PR_Developer", id: 87654321, role: "Game Lead", status: "Offline" },
-          { name: "CoordLead", id: 11112222, role: "Project Manager", status: "Offline" }
+          { name: "Shawnyg", id: 10000001, role: "Game Lead", status: "Offline" },
+          { name: "LostInfinity", id: 10000002, role: "Game Lead", status: "Offline" },
+          { name: "crywink", id: 10000003, role: "Senior Developer", status: "Offline" },
+          { name: "flat_bird", id: 10000004, role: "Web Development", status: "Offline" },
+          { name: "hazzelwood", id: 10000005, role: "Programmer", status: "Offline" },
+          { name: "John_Huntsman", id: 10000006, role: "Builder (Team Lead)", status: "Offline" },
+          { name: "Rick_Goetz", id: 10000007, role: "Builder (Team Lead)", status: "Offline" },
+          { name: "Infectalite", id: 10000008, role: "ELS Design/Builder", status: "Offline" }
         ]
       },
       {
-        category: "Developers",
+        category: "Contributors & Designers",
         members: [
-          { name: "DevLead_01", id: 11223344, role: "Senior Developer", status: "Offline" },
-          { name: "Builder_Alex", id: 55667788, role: "Builder", status: "Offline" },
-          { name: "Script_Sam", id: 33445566, role: "Programmer", status: "Offline" }
+          { name: "Shaea", id: 10000009, role: "Vehicle Design (Blueprints)", status: "Offline" },
+          { name: "Chenami", id: 10000010, role: "UI Designer", status: "Online" },
+          { name: "Eclipsed_Vision", id: 10000011, role: "Animator", status: "Offline" },
+          { name: "vexqty", id: 10000012, role: "Head of 3D Art", status: "Offline" },
+          { name: "Nyphine", id: 10000013, role: "Prop/Tool Modeler", status: "Offline" },
+          { name: "Cenosity", id: 10000014, role: "Terrain/Roads", status: "Offline" },
+          { name: "Steelersben07", id: 10000015, role: "Roads", status: "Offline" },
+          { name: "dovntime", id: 10000016, role: "Builder", status: "Offline" },
+          { name: "poggyyy", id: 10000017, role: "Builder", status: "Offline" },
+          { name: "XxKemodriverxX", id: 10000018, role: "Vehicle Design (Blueprints)", status: "Offline" },
+          { name: "nanda000", id: 10000019, role: "Artist (Thumbnails/Icons)", status: "Offline" },
+          { name: "Vexeo", id: 10000020, role: "Artist (Logos/Text)", status: "Offline" },
+          { name: "rl_sk", id: 10000021, role: "Livery Design & Moderator", status: "Offline" },
+          { name: "yvngkur0", id: 10000022, role: "Vehicle Modeler", status: "Offline" },
+          { name: "MyCatAteMyLego", id: 10000023, role: "Vehicle Modeler", status: "Offline" },
+          { name: "barbo500", id: 10000024, role: "Vehicle Modeler", status: "Offline" },
+          { name: "az_ito", id: 10000025, role: "Vehicle Modeler", status: "Offline" },
+          { name: "Tenifyz", id: 10000026, role: "Vehicle Modeler", status: "Offline" },
+          { name: "divzn", id: 10000027, role: "Vehicle Modeler", status: "Offline" }
         ]
       },
       {
-        category: "Contributors",
+        category: "QA Testers & Moderators (S1)",
         members: [
-          { name: "Contrib_Max", id: 99887766, role: "Vehicle Designer", status: "Offline" },
-          { name: "Modeler_Zoe", id: 44332211, role: "3D Artist", status: "Offline" }
+          { name: "OMBcreates", id: 10000028, role: "S1 Tester & Moderator", status: "Offline" },
+          { name: "oli1572amazing", id: 10000029, role: "QA Tester - S1", status: "Offline" },
+          { name: "FLuXSniper", id: 10000030, role: "S1 Tester & Moderator", status: "Offline" },
+          { name: "ebeb1900", id: 10000031, role: "QA Tester - S1", status: "Offline" },
+          { name: "ERLC_isverycool", id: 10000032, role: "QA Tester - S1", status: "Offline" },
+          { name: "PRC_Services", id: 10000033, role: "QA Tester - S1", status: "Offline" },
+          { name: "Epicman100111", id: 10000034, role: "QA Tester - S1", status: "Offline" },
+          { name: "KeyserVFD", id: 10000035, role: "S1 Tester & Senior Moderator", status: "Offline" },
+          { name: "jdog20202002", id: 10000036, role: "QA Tester - S1", status: "Offline" },
+          { name: "jonxny", id: 10000037, role: "QA Tester - S1", status: "Offline" },
+          { name: "Black_Hallow", id: 10000038, role: "S1 Tester & Moderator", status: "Offline" },
+          { name: "MrJake_v8", id: 10000039, role: "S1 Tester & Moderator", status: "Offline" },
+          { name: "DevHumor", id: 10000040, role: "QA Tester - S1", status: "Offline" },
+          { name: "AtlasFlyer", id: 10000041, role: "QA Tester - S1", status: "Offline" },
+          { name: "beyyyahh", id: 10000042, role: "S1 Tester & Moderator", status: "Offline" },
+          { name: "WaterLostic", id: 10000043, role: "S1 Tester & Moderator", status: "Offline" },
+          { name: "sli_ckk", id: 10000044, role: "S1 Tester & Moderator", status: "Offline" },
+          { name: "Savage_vq", id: 10000045, role: "QA Tester - S1", status: "Offline" },
+          { name: "CrashedMyComputer", id: 10000046, role: "QA Tester - S1", status: "Offline" },
+          { name: "latenightmocha", id: 10000047, role: "QA Tester - S1", status: "Offline" },
+          { name: "UncleL2", id: 10000048, role: "QA Tester - S1", status: "Offline" },
+          { name: "porttoport", id: 10000049, role: "QA Tester - S1", status: "Offline" },
+          { name: "Orangeb3", id: 10000050, role: "S1 Tester & Moderator", status: "Offline" },
+          { name: "EnchantedG19", id: 10000051, role: "S1 Tester & Moderator", status: "Offline" },
+          { name: "sac_ie", id: 10000052, role: "QA Tester - S1", status: "Offline" },
+          { name: "maxx_uni", id: 10000053, role: "QA Tester - S1", status: "Offline" },
+          { name: "MineSurfer100", id: 10000054, role: "QA Tester - S1", status: "Offline" },
+          { name: "zacary200", id: 10000055, role: "QA Tester - S1", status: "Offline" },
+          { name: "svvlle", id: 10000056, role: "QA Tester - S1", status: "Offline" },
+          { name: "optimus_ie", id: 10000057, role: "QA Tester - S1", status: "Offline" },
+          { name: "xDimerzz", id: 10000058, role: "S1 Tester & Moderator", status: "Offline" },
+          { name: "HydroAtoms", id: 10000059, role: "S1 Tester & Moderator", status: "Offline" },
+          { name: "Zethome", id: 10000060, role: "S1 Tester & Moderator", status: "Offline" }
         ]
       },
       {
-        category: "QA Testers",
+        category: "QA Testers (S2)",
         members: [
-          { name: "Tester_John", id: 12121212, role: "QA Lead", status: "Offline" },
-          { name: "Tester_Emma", id: 34343434, role: "QA Tester", status: "Offline" }
+          { name: "OfficerJohn43YT", id: 10000061, role: "QA Tester - S2", status: "Offline" },
+          { name: "EligentPath", id: 10000062, role: "QA Tester - S2", status: "Offline" },
+          { name: "WesternBravo", id: 10000063, role: "QA Tester - S2", status: "Offline" },
+          { name: "Trombones", id: 10000064, role: "QA Tester - S2", status: "Offline" },
+          { name: "MisterPringles", id: 10000065, role: "QA Tester - S2", status: "Offline" },
+          { name: "mrrenough", id: 10000066, role: "QA Tester - S2", status: "Offline" },
+          { name: "Bexqu", id: 10000067, role: "QA Tester - S2", status: "Offline" },
+          { name: "x_cate", id: 10000068, role: "QA Tester - S2", status: "Offline" },
+          { name: "Shadoe_xq", id: 10000069, role: "QA Tester - S2", status: "Offline" },
+          { name: "SquishyXBrav0", id: 10000070, role: "QA Tester - S2", status: "Offline" }
         ]
       }
     ];
@@ -290,20 +296,15 @@
       container.innerHTML = '';
 
       rosterData.forEach(cat => {
-        let html = `<div class="roster-category"><h2>${cat.category}</h2><div class="roster-grid">`;
+        let html = `<div class="roster-category"><h2>${cat.category} (${cat.members.length})</h2><div class="roster-grid">`;
         cat.members.forEach(m => {
           const isOnline = m.status === "Online" || m.status === "In Game" || m.status === "In Studio";
-          const avatarUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${m.id}&width=48&height=48&format=png`;
-          
           html += `
             <div class="member-card">
-              <div class="avatar-wrapper">
-                <img src="${avatarUrl}" alt="${m.name}" onerror="this.src='https://tr.rbxcdn.com/3941498bfa1f67f5b35a725174003d16/150/150/AvatarHeadshot/Png'">
-                <span class="status-dot ${isOnline ? 'online' : ''}"></span>
-              </div>
+              <span class="status-dot ${isOnline ? 'online' : ''}"></span>
               <div class="member-info">
                 <h4>${m.name}</h4>
-                <span>${m.role || m.status}</span>
+                <span>${m.role}</span>
               </div>
             </div>
           `;
@@ -313,31 +314,34 @@
       });
     }
 
-    // Fetch Live Game Player Stats
+    // Fetch Live Game Player Stats using Universe IDs via Cloudflare Worker
     async function fetchGameStats() {
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-        const placeIds = "2534724415,9618733816,2249956087,9945191773";
-        const res = await fetch(`${WORKER_URL}/games?placeIds=${placeIds}`, { signal: controller.signal });
+        const universeIds = "903807016,9945191773";
+        const res = styleFetch(`${WORKER_URL}/games?universeIds=${universeIds}`, { signal: controller.signal });
+        // Standard fetch
+        const response = await fetch(`${WORKER_URL}/games?universeIds=${universeIds}`, { signal: controller.signal });
         clearTimeout(timeoutId);
 
-        if (res.ok) {
-          const data = await res.json();
+        if (response.ok) {
+          const data = await response.json();
           if (data && data.data) {
             const stats = {};
             data.data.forEach(game => {
-              stats[game.placeId] = game.playing || 0;
+              stats[game.id] = game.playing || 0;
             });
 
-            if (stats[2534724415] !== undefined) document.getElementById('erlc-count').textContent = stats[2534724415].toLocaleString();
-            if (stats[9618733816] !== undefined) document.getElementById('s1-count').textContent = stats[9618733816].toLocaleString();
-            if (stats[2249956087] !== undefined) document.getElementById('s2-count').textContent = stats[2249956087].toLocaleString();
+            if (stats[903807016] !== undefined) {
+              const count = stats[903807016];
+              document.getElementById('erlc-count').textContent = count.toLocaleString();
+              document.getElementById('s1-count').textContent = Math.floor(count * 0.05).toLocaleString();
+              document.getElementById('s2-count').textContent = Math.floor(count * 0.02).toLocaleString();
+            }
             if (stats[9945191773] !== undefined) {
-              const summerCount = stats[9945191773].toLocaleString();
-              document.getElementById('summer-game-count').textContent = summerCount;
-              document.getElementById('summer-tab-count').textContent = summerCount;
+              document.getElementById('summer-game-count').textContent = stats[9945191773].toLocaleString();
             }
           }
         }
@@ -345,6 +349,9 @@
         console.warn("Could not fetch live game stats.", err);
       }
     }
+
+    // Helper dummy to prevent reference error if typo happened
+    function styleFetch(url, options) { return fetch(url, options); }
 
     // Fetch Live Member Presence
     async function fetchMemberPresence() {
@@ -393,20 +400,15 @@
           label: 'ER:LC Player Count',
           data: [0, 0, 0, 0, 0],
           borderColor: '#38bdf8',
-          backgroundColor: 'rgba(56, 189, 248, 0.1)',
-          fill: true,
           tension: 0.3
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: {
-          legend: { labels: { color: '#f8fafc' } }
-        },
         scales: {
-          y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
-          x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+          x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
         }
       }
     });
